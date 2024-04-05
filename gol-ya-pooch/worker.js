@@ -86,7 +86,7 @@ function generateHTML() {
 	</head>
 	<body>
 	<div class="container">
-	  <a href="https://github.com/Ptechgithub/workers/gol-ya-pooch" target="_blank" style="position: absolute; top: 10px; right: 10px; color: yellow;">Github لینک</a>
+	  <a href="https://github.com/Ptechgithub/workers/tree/main/gol-ya-pooch" target="_blank" style="position: absolute; top: 10px; right: 10px; color: yellow;">Github لینک</a>
 	  <h1>بازی گل یا پوچ</h1>
 	  <p>امتیاز: <span id="score">0</span></p>
 	  <div id="message"></div>
