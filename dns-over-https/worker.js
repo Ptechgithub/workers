@@ -1,40 +1,58 @@
-// SPDX-License-Identifier: 0BSD
+export const onRequestGet = async ({
+  request,
+}) => {
+  const clientUA = request.headers.get(`User-Agent`);
+  const clientIP = request.headers.get(`CF-Connecting-IP`);
+  const clientASN = request.cf.asn;
+  const clientISP = request.cf.asOrganization;
+  const cloudflareColo = request.cf.colo;
+  const { httpProtocol } = request.cf;
+  const { tlsCipher } = request.cf;
+  const { tlsVersion } = request.cf;
+  const clientCO = request.cf.country;
+  const clientCI = request.cf.city;
+  const clientRE = request.cf.region;
+  const clientLAT = request.cf.latitude;
+  const clientLON = request.cf.longitude;
+  const clientPC = request.cf.postalCode;
+  const clientTZ = request.cf.timezone;
+  if (clientUA.includes("Mozilla")) {
+    return new Response(`Public IP: ${clientIP}\n`
+            + `ASN: ${clientASN}\n`
+            + `ISP: ${clientISP}\n`
+            + `Cloudflare Data Center: ${cloudflareColo}\n`
+            + `HTTP Protocol: ${httpProtocol}\n`
+            + `TLS Cipher: ${tlsCipher}\n`
+            + `TLS Version: ${tlsVersion}\n`
+            + `Country: ${clientCO}\n`
+            + `City: ${clientCI}\n`
+            + `Region: ${clientRE}\n`
+            + `Latitude, Longitude: ${clientLAT},${clientLON}\n`
+            + `Postal Code: ${clientPC}\n`
+            + `Timezone: ${clientTZ}\n`
+            + `User Agent: ${clientUA}\n`, {
+      status: 200,
+    });
+  }
+  else { 
+    return new Response(
+    `{\n "ip": "${clientIP}",\n`
+            + ` "org": "AS${clientASN} ${clientISP}",\n`
+            + ` "cfdc": "${cloudflareColo}",\n`
+            + ` "protocol": "${httpProtocol}",\n`
+            + ` "cipher": "${tlsCipher}",\n`
+            + ` "tlsversion": "${tlsVersion}",\n`
+            + ` "country": "${clientCO}",\n`
+            + ` "city": "${clientCI}",\n`
+            + ` "region": "${clientRE}",\n`
+            + ` "loc": "${clientLAT},${clientLON}",\n`
+            + ` "postal": "${clientPC}",\n`
+            + ` "timezone": "${clientTZ}",\n`
+            + ` "useragent": "${clientUA}"\n}\n`,
 
-const doh = 'https://security.cloudflare-dns.com/dns-query';
-const contype = 'application/dns-message';
-const jstontype = 'application/dns-json';
-const r404 = new Response(null, { status: 404 });
-
-export default {
-    async fetch(request) {
-        return handleRequest(request);
+    {
+      status: 200,
     },
+  );
+  }
 };
-
-async function handleRequest(request) {
-    let response = r404;
-    const { method, headers, url } = request;
-    const searchParams = new URL(url).searchParams;
-    
-    if (method === 'GET' && searchParams.has('dns')) {
-        const dohUrl = new URL(doh);
-        dohUrl.searchParams.append('dns', searchParams.get('dns'));
-        response = await fetch(dohUrl, { method: 'GET', headers: { 'Accept': contype } });
-    } else if (method === 'POST' && headers.get('content-type') === contype) {
-        const requestBody = await request.arrayBuffer();
-        response = await fetch(doh, {
-            method: 'POST',
-            headers: {
-                'Accept': contype,
-                'Content-Type': contype,
-            },
-            body: requestBody,
-        });
-    } else if (method === 'GET' && headers.get('Accept') === jstontype) {
-        const dohJsonUrl = new URL(doh);
-        dohJsonUrl.search = url.search;
-        response = await fetch(dohJsonUrl, { method: 'GET', headers: { 'Accept': jstontype } });
-    }
-    
-    return response;
-}
