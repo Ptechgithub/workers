@@ -22,8 +22,15 @@ async function handleRequest(request) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Ù¾Ø®Ø´ Ù…ÙˆØ³ÛŒÙ‚ÛŒ Ø¨Ø§ Ø¹Ú©Ø³</title>
+      <title>کلیک کن بشنو</title>
       <style>
+        body {
+          background-image: url('https://raw.githubusercontent.com/Ptechgithub/configs/main/media/5-5.jpg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+        }
+
         .container {
           text-align: center;
           margin-top: 50px;
@@ -63,12 +70,12 @@ async function handleRequest(request) {
         }
       </style>
     </head>
-    <body style="background-image: url('https://raw.githubusercontent.com/Ptechgithub/configs/main/media/5-5.jpg');">
-      <a href="https://github.com/Ptechgithub/workers/tree/main/click-game-music" class="github-link" style="color: blue;">Github Ù„ÛŒÙ†Ú©</a>
+    <body>
+      <a href="https://github.com/Ptechgithub/workers/tree/main/click-game-music" class="github-link" style="color: blue;">Github لینک</a>
       <div class="container">
-        <img id="albumArt" src="https://raw.githubusercontent.com/Ptechgithub/configs/main/media/4-4.jpg" alt="Ø¢Ù„Ø¨ÙˆÙ… Ù…ÙˆØ³ÛŒÙ‚ÛŒ">
+        <img id="albumArt" src="https://raw.githubusercontent.com/Ptechgithub/configs/main/media/4-4.jpg" alt="در حال بارگیری ">
         <div class="description">
-          <p>Ø§ÛŒÙ† ÛŒÚ© Ø¨Ø§Ø²ÛŒ Ú©Ù„ÛŒÚ©ÛŒ ðŸ‘†Ø§Ø³Øª! Ø¨Ø§ Ø³Ø±Ø¹Øª Ø¨Ø± Ø±ÙˆÛŒ ØªØµÙˆÛŒØ± Ú©Ù„ÛŒÚ© Ú©Ù†ÛŒØ¯ ØªØ§ ØµØ¯Ø§ÛŒ Ø¢Ù† Ø±Ø§ Ø¨Ø´Ù†ÙˆÛŒØ¯.</p>
+          <p>این یک بازی کلیکی 👆 است. برای پخش صدا بدون توقف و با سرعت بالا کلیک کنید.</p>
         </div>
       </div>
       <audio id="audioPlayer" controls hidden>
