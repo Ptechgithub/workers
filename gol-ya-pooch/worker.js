@@ -5,6 +5,18 @@ addEventListener('fetch', event => {
 const buttonNameRegex = /^[a-zA-Z]+$/;
 
 async function handleRequest(request) {
+  const userAgent = request.headers.get('User-Agent');
+  
+  if (!userAgent || !userAgent.includes('Mozilla')) {
+    return new Response('https://github.com/Ptechgithub', {
+      status: 403,
+      statusText: 'Forbidden',
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+    });
+  }
+  
   const html = generateHTML();
   
   return new Response(html, {
@@ -114,7 +126,7 @@ function generateHTML() {
 	      }
 	      scoreElement.innerText = score;
 	      if (score === 29) {
-	        alert('آفرین! بازی بازی تموم شد امتیاز شما 2️⃣9️⃣ شد');
+	        alert('آفرین! بازی تموم شد امتیاز شما 2️⃣9️⃣ شد');
 	        score = 0;
 	        scoreElement.innerText = score;
 	      } else if (score === 0) {
