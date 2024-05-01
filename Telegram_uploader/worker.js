@@ -20,7 +20,7 @@ async function handleIncomingRequest(event) {
     const url = `https://api.telegram.org/bot${telegramAuthToken}/setWebhook?url=${workerUrl}${webhookEndpoint}`;
 
     const response = await fetch(url);
-
+
     if (response.ok) {
       return new Response("Webhook set successfully", { status: 200 });
     } else {
