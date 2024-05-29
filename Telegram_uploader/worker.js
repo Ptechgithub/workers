@@ -1,6 +1,6 @@
 
 // Telegram Uploader bot
-const telegramAuthToken = `12345`; //Add your TOKEN
+const telegramAuthToken = `6840631863:AAF4I-awR_4SznS7XVlL6HI6n9ZQ_jvMw7c`; //Add your TOKEN
 const webhookEndpoint = "/endpoint";
 
 addEventListener("fetch", event => {
