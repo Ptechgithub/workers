@@ -57,9 +57,7 @@ async function registerDevice(publicKey, installId = '') {
   return resp.json();
 }
 
-function generateWireGuardURL({PrivateKey, PeerPublicKey, Reserved, IPv6}) {
-  const ServerIP = "8.39.204.72";
-  const Port = 7156;
+function generateWireGuardURL({PrivateKey, PeerPublicKey, Reserved, IPv6, ServerIP, Port}) {
   const IPv4 = "172.16.0.2/32";
   const ReservedStr = Reserved.join(',');
 
@@ -80,12 +78,33 @@ async function handleRequest(request) {
       const peerPublicKey = data.config.peers[0].public_key;
       const v6 = data.config.interface.addresses.v6;
 
+      let serverIP = "8.39.204.72";
+      let port = 7156;
+
+      try {
+        const resp = await fetch('https://raw.githubusercontent.com/ircfspace/endpoint/refs/heads/main/ip.json');
+        if (resp.ok) {
+          const obj = await resp.json();
+          if (Array.isArray(obj.ipv4) && obj.ipv4.length > 0) {
+            const pick = obj.ipv4[Math.floor(Math.random() * obj.ipv4.length)];
+            const [ipPart, portPart] = pick.split(':');
+            if (ipPart && portPart) {
+              serverIP = ipPart;
+              port = parseInt(portPart, 10);
+            }
+          }
+        }
+      } catch (e) {
+      }
+
       if (pathname === '/v2ray') {
           const configUrl = generateWireGuardURL({
               PrivateKey: privateKey,
               PeerPublicKey: peerPublicKey,
               Reserved: reserved,
               IPv6: v6 + '/128',
+              ServerIP: serverIP,
+              Port: port
           });
 
           return new Response(configUrl, {
@@ -135,7 +154,6 @@ All keys are generated dynamically on each request.
               headers: {'Content-Type': 'text/plain; charset=utf-8'},
           });
       }
-
 
       return new Response("404 Not Found\n\nUse /help for usage info.", {
           status: 404,
